@@ -5,9 +5,9 @@ spring:
   application:
     name: 'user-service'
   datasource:
-    url: ${DB_URL:jdbc:postgresql://35.193.21.173:5432/postgres}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:Password123!}
+    url: ${DB_URL:jdbc:postgresql://35.223.44.11:5432/reserve}
+    username: ${DB_USERNAME:reserve1}
+    password: ${DB_PASSWORD:1234}
     driver-class-name: org.postgresql.Driver
 SECRET_KEY: ${SECRET:jkdnjdnjnvjndjkvndkjncjdncjhcdjhcdjcbcnckndcdnckdnckdnckdnkcndcnkdnckdncdncjdjcdjbcjbcjdcdbcdbjcdjb}
 
