@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: project3-userservice-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: userservice-deployment
@@ -14,14 +14,14 @@ spec:
         app: userservice-deployment
     spec:
       containers:
-      - image: javasre2022/userservice:latest
+      - image: keoffor/user-service:latest
         env:
           - name: VALIDATION
-            value: http://34.121.99.46:8081/users/validate
+            value: http://34.122.231.247:8081/users/validate
           - name: EUREKA_URI
-            value: http://35.239.70.25:8083/eureka
+            value: http://35.223.118.158:8083/eureka
           - name: ANGULAR_URI
-            value: http://34.69.17.73:80
+            value: http://34.122.103.73:80
           - name: AWS_ACCESS_KEY
             value: AKIA4OK5FKIY3WZXH4XW
           - name:  AWS_SECRET_KEY
