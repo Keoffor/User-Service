@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Test') {
             when{
-            branch 'Features'
+            branch 'master'
             }
           steps {
             sh 'ls $WORKSPACE '
@@ -23,7 +23,7 @@ pipeline {
           }
           stage('Build') {
                when {
-                   branch 'main'
+                   branch 'master'
                }
                steps {
                     sh 'ls $WORKSPACE '
@@ -37,7 +37,7 @@ pipeline {
         }
         stage('Docker Build') {
                    when {
-                       branch 'main'
+                       branch 'master'
                    }
                    steps {
                         dir("User-Service") {
@@ -50,7 +50,7 @@ pipeline {
              }
              stage('Docker Deliver') {
                      when {
-                         branch 'main'
+                         branch 'master'
                      }
                      steps {
                              dir("User-Service") {
