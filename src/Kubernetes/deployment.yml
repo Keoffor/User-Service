@@ -17,11 +17,11 @@ spec:
       - image: keoffor/user-service:latest
         env:
           - name: VALIDATION
-            value: http://34.122.231.247:8081/users/validate
+            value: http://$(USER_SERVICE_SERVICE_HOST):8081/users/validate
           - name: EUREKA_URI
-            value: http://35.223.118.158:8083/eureka
+            value: http://(EUREKA_SERVICE_SERVICE_HOST):8083/eureka
           - name: ANGULAR_URI
-            value: http://34.122.103.73:80
+            value: http://104.154.243.74:80
           - name: AWS_ACCESS_KEY
             value: AKIA4OK5FKIY3WZXH4XW
           - name:  AWS_SECRET_KEY
@@ -60,10 +60,3 @@ spec:
   endpoints:
     - port: http-app2
       path: "/actuator/prometheus"
-
-
-
-
-
-
-

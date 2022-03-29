@@ -5,8 +5,8 @@ spring:
   application:
     name: 'user-service'
   datasource:
-    url: ${DB_URL:jdbc:postgresql://35.223.44.11:5432/reserve}
-    username: ${DB_USERNAME:reserve1}
+    url: ${DB_URL:jdbc:postgresql://35.192.86.45:5432/stagedb}
+    username: ${DB_USERNAME:staging}
     password: ${DB_PASSWORD:1234}
     driver-class-name: org.postgresql.Driver
 SECRET_KEY: ${SECRET:jkdnjdnjnvjndjkvndkjncjdncjhcdjhcdjcbcnckndcdnckdnckdnckdnkcndcnkdnckdncdncjdjcdjbcjbcjdcdbcdbjcdjb}
