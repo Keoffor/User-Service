@@ -25,12 +25,10 @@ pipeline {
                }
                steps {
                     sh 'ls $WORKSPACE '
-                            dir("User-Service") {
                             sh 'echo "Hello World"'
                    withMaven {
                        sh 'mvn clean package -DskipTests'
               }
-            }
           }
         }
         stage('Docker Build') {
@@ -49,15 +47,12 @@ pipeline {
                          branch 'master'
                      }
                      steps {
-                             dir("User-Service") {
                          script {
                              docker.withRegistry('', dockerHubCreds) {
                                  dockerImage.push("$currentBuild.number")
                                  dockerImage.push("latest")
 
-                  }
-               }
-
+              }
             }
           }
         }
