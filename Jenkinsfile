@@ -85,7 +85,7 @@ pipeline {
                    steps{
 
                          sh 'sed -i "s/%TAG%/$BUILD_NUMBER/g" ./src/Kubernetes/deployment.yml'
-                         sh 'cat ./src/kubernetes/deployment.yml'
+                         sh 'cat ./src/Kubernetes/deployment.yml'
                          sh 'helm list'
                        step([$class: 'KubernetesEngineBuilder',
                            projectId: 'stagingpro',
