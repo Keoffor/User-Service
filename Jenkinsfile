@@ -94,8 +94,7 @@ pipeline {
                            credentialsId: 'stagingpro',
                            verifyDeployments: true
                        ])
-          }
-      }
+       }
     }
   }
 }
