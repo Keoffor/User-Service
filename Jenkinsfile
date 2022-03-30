@@ -50,7 +50,7 @@ pipeline {
                          script {
                              docker.withRegistry('', dockerHubCreds) {
                                  dockerImage.push("$currentBuild.number")
-                                 dockerImage.push("latest")
+                                dockerImage.push("latest")
 
               }
             }
@@ -78,26 +78,24 @@ pipeline {
 //                     }
 //                 }
 //             }
-//            stage('Deploy to GKE') {
-//                    when {
-//                        branch 'main'
-//                    }
-//                    steps{
-//                         echo "build deployment " + deploymentFile
-//                         dir("project2FrontEnd") {
-//
-//                          sh 'sed -i "s/%TAG%/$BUILD_NUMBER/g" ./k8s/api1.yml'
-//                          sh 'cat ./k8s/api1.yml'
-//                        step([$class: 'KubernetesEngineBuilder',
-//                            projectId: 'macro-key-339512',
-//                            clusterName: 'macro-key-339512-gke',
-//                            zone: 'us-central1',
-//                            manifestPattern: 'k8s/',
-//                            credentialsId: 'macro-key-339512',
-//                            verifyDeployments: true
-//                        ])
-//           }
-//       }
-//     }
+           stage('Deploy to GKE') {
+                   when {
+                       branch 'master'
+                   }
+                   steps{
+
+                         sh 'sed -i "s/%TAG%/$BUILD_NUMBER/g" ./src/kubernetes/deployment.yml'
+                         sh 'cat ./src/kubernetes/deployment.yml'
+                       step([$class: 'KubernetesEngineBuilder',
+                           projectId: 'stagingpro',
+                           clusterName: 'stagingpro-gke',
+                           zone: 'us-central1',
+                           manifestPattern: 'src/kubernetes/',
+                           credentialsId: 'stagingpro',
+                           verifyDeployments: true
+                       ])
+          }
+      }
+    }
   }
 }
