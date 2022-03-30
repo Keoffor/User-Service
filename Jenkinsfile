@@ -13,13 +13,11 @@ pipeline {
             }
           steps {
             sh 'ls $WORKSPACE '
-//             dir("User-Service") {
             sh 'echo "Hello World"'
               withMaven {
                 sh 'mvn test'
               }
             }
-//             }
           }
           stage('Build') {
                when {
@@ -40,13 +38,11 @@ pipeline {
                        branch 'master'
                    }
                    steps {
-                        dir("User-Service") {
                        script {
                            echo "$registry:$currentBuild.number"
                            dockerImage = docker.build "$registry"
                        }
                    }
-               }
              }
              stage('Docker Deliver') {
                      when {
