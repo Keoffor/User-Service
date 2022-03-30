@@ -3,7 +3,7 @@ pipeline {
             registry = 'keoffor/user-service'
             dockerHubCreds = 'docker_hub'
             dockerImage = ''
-            deploymentFile = 'src/Kubernetes/deployment.yml'
+            deploymentFile = 'src/kubernetes/deployment.yml'
         }
     agent any
     stages {
@@ -85,7 +85,8 @@ pipeline {
                    steps{
 
                          sh 'sed -i "s/%TAG%/$BUILD_NUMBER/g" ./src/Kubernetes/deployment.yml'
-                         sh 'cat ./src/Kubernetes/deployment.yml'
+                         sh 'cat ./src/kubernetes/deployment.yml'
+                         sh 'helm list'
                        step([$class: 'KubernetesEngineBuilder',
                            projectId: 'stagingpro',
                            clusterName: 'stagingpro-gke',
