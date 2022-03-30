@@ -48,15 +48,15 @@ spec:
       targetPort: 8081
   selector:
     app: userservice-deployment
-#---
-#apiVersion: monitoring.coreos.com/v1
-#kind: ServiceMonitor
-#metadata:
-#  name: user-service-monitor
-#spec:
-#  selector:
-#    matchLabels:
-#      app: userservice-service
-#  endpoints:
-#    - port: http-app2
-#      path: "/actuator/prometheus"
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: user-service-monitor
+spec:
+  selector:
+    matchLabels:
+      app: userservice-service
+  endpoints:
+    - port: http-app2
+      path: "/actuator/prometheus"
