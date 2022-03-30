@@ -13,13 +13,13 @@ pipeline {
             }
           steps {
             sh 'ls $WORKSPACE '
-            dir("User-Service") {
+//             dir("User-Service") {
             sh 'echo "Hello World"'
               withMaven {
                 sh 'mvn test'
               }
             }
-            }
+//             }
           }
           stage('Build') {
                when {
