@@ -86,10 +86,10 @@ pipeline {
 
 //                          sh 'sed -i "s/%TAG%/$BUILD_NUMBER/g" ./src/Kubernetes/deployment.yml'
 //                          sh 'cat ./src/Kubernetes/deployment.yml'
-                                withKubeConfig([credentialsId: 'stagingpro',
+                                withKubeConfig(credentialsId: 'stagingpro',
                                  serverUrl: 'https://34.122.38.138',
                                  clusterName: 'stagingpro-gke',
-                                 namespace: 'default']) {
+                                 namespace: 'default') {
                                 sh("helm list -n default ")
 
 //                        step([$class: 'KubernetesEngineBuilder',
