@@ -84,24 +84,18 @@ pipeline {
                    }
                    steps{
 
-//                          sh 'sed -i "s/%TAG%/$BUILD_NUMBER/g" ./src/Kubernetes/deployment.yml'
-//                          sh 'cat ./src/Kubernetes/deployment.yml'
-                                withKubeConfig(credentialsId: 'stagingpro',
-                                 serverUrl: 'https://34.122.38.138',
-                                 clusterName: 'stagingpro-gke',
-                                 namespace: 'default') {
-                                sh("helm list -n default ")
-
-//                        step([$class: 'KubernetesEngineBuilder',
-//                            projectId: 'stagingpro',
-//                            clusterName: 'stagingpro-gke',
-//                            zone: 'us-central1',
-//                            manifestPattern: 'src/Kubernetes/',
-//                            credentialsId: 'stagingpro',
-//                            verifyDeployments: true
-//                        ])
+                         sh 'sed -i "s/%TAG%/$BUILD_NUMBER/g" ./src/Kubernetes/deployment.yml'
+                         sh 'cat ./src/Kubernetes/deployment.yml'
+                         sh 'helm list'
+                       step([$class: 'KubernetesEngineBuilder',
+                           projectId: 'stagingpro',
+                           clusterName: 'stagingpro-gke',
+                           zone: 'us-central1',
+                           manifestPattern: 'src/Kubernetes/',
+                           credentialsId: 'stagingpro',
+                           verifyDeployments: true
+                       ])
        }
-    }
     }
   }
 }
