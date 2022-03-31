@@ -13,6 +13,7 @@ pipeline {
             }
           steps {
             sh 'ls $WORKSPACE '
+            sh 'mvn -v'
             sh 'echo "Hello World"'
               withMaven {
                 sh 'mvn test'
