@@ -83,18 +83,23 @@ pipeline {
                        branch 'master'
                    }
                    steps{
+                            withKubeConfig(credentialsId: 'stagingpro', serverUrl: 'https://34.122.38.138:8081') {
+                                    // sh 'curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.20.5/bin/linux/amd64/kubectl"'
+                                     sh 'chmod u+x ./kubectl'
+                                     sh './kubectl apply -f Kubernetes/deployment.yml'
+                                     sh 'helm list'
 
-                         sh 'sed -i "s/%TAG%/$BUILD_NUMBER/g" ./src/Kubernetes/deployment.yml'
-                         sh 'cat ./src/Kubernetes/deployment.yml'
-                         sh 'helm list'
-                       step([$class: 'KubernetesEngineBuilder',
-                           projectId: 'stagingpro',
-                           clusterName: 'stagingpro-gke',
-                           zone: 'us-central1',
-                           manifestPattern: 'src/Kubernetes/',
-                           credentialsId: 'stagingpro',
-                           verifyDeployments: true
-                       ])
+//                          sh 'sed -i "s/%TAG%/$BUILD_NUMBER/g" ./src/Kubernetes/deployment.yml'
+//                          sh 'cat ./src/Kubernetes/deployment.yml'
+//                          sh 'helm list'
+//                        step([$class: 'KubernetesEngineBuilder',
+//                            projectId: 'stagingpro',
+//                            clusterName: 'stagingpro-gke',
+//                            zone: 'us-central1',
+//                            manifestPattern: 'src/Kubernetes/',
+//                            credentialsId: 'stagingpro',
+//                            verifyDeployments: true
+//                        ])
        }
     }
   }
