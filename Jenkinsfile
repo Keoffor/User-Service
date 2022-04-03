@@ -75,7 +75,6 @@ pipeline {
 
                          sh 'sed -i "s/%TAG%/$BUILD_NUMBER/g" ./src/Kubernetes/deployment.yml'
                          sh 'cat ./src/Kubernetes/deployment.yml'
-                         sh 'kubectl get pods'
                        step([$class: 'KubernetesEngineBuilder',
                            projectId: 'stagingpro',
                            clusterName: 'stagingpro-gke',
