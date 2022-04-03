@@ -4,6 +4,7 @@ pipeline {
             dockerHubCreds = 'docker_hub'
             dockerImage = ''
             deploymentFile = 'src/kubernetes/deployment.yml'
+            PATH = "$PATH:/usr/share/maven/bin"
         }
     agent any
     stages {
@@ -13,7 +14,6 @@ pipeline {
             }
           steps {
             sh 'ls $WORKSPACE '
-            sh 'mvn -v'
             sh 'echo "Hello World"'
               withMaven {
                 sh 'mvn test'
@@ -26,7 +26,6 @@ pipeline {
                }
                steps {
                     sh 'ls $WORKSPACE '
-                            sh 'echo "Hello World"'
                    withMaven {
                        sh 'mvn clean package -DskipTests'
               }
@@ -57,28 +56,17 @@ pipeline {
             }
           }
         }
-//         stage('Wait for approval') {
-//                 when {
-//                     branch 'main'
-//                 }
-//                 steps {
-//                         dir("project2FrontEnd") {
-//                     script {
-//                         try {
-//                             timeout(time: 1, unit: 'MINUTES') {
-//                                 approved = input message: 'Deploy to production?', ok: 'Continue',
-//                                                    parameters: [choice(name: 'approved', choices: 'Yes\nNo', description: 'Deploy build to production')]
-//                                 if(approved != 'Yes') {
-//                                     error('Build did not pass approval')
-//                                 }
-//                             }
-//                         } catch(error) {
-//                             error('Build failed because timeout was exceeded')
-//                             }
-//                         }
-//                     }
-//                 }
-//             }
+        stage('SonarQube analysis') {
+        //    def scannerHome = tool 'SonarScanner 4.0';
+                steps{
+                withSonarQubeEnv('sonar1') {
+                // If you have configured more than one global server connection, you can specify its name
+        //      sh "${scannerHome}/bin/sonar-scanner"
+                sh "mvn sonar:sonar"
+            }
+           }
+         }
+
            stage('Deploy to GKE') {
                    when {
                        branch 'master'
