@@ -61,6 +61,7 @@ public class AuthenticationControllerTest {
 
         assertEquals(401, testResponseEntity.getStatusCodeValue(), "TestResponseEntity status not 401!");
     }
+    
 
     @Test
     public void validateJWTTestSuccess() {
