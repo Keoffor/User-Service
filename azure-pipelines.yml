@@ -32,7 +32,7 @@ steps:
 - task: Docker@2
   displayName: Docker build and Push
   inputs:
-    containerRegistry: 'brosme'
+    containerRegistry: 'pro3'
     repository: 'keoffor/user-service'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
