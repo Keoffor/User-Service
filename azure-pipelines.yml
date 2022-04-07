@@ -3,27 +3,57 @@
 trigger:
 - master
 
-pool:
-  vmImage: ubuntu-latest
+pool: Default
 
 steps:
-- task: Maven@3
+- task: SonarCloudPrepare@1
+  displayName: prepare sonar
   inputs:
-    mavenPomFile: '/project2/pom.xml'
-    mavenOptions: '-Xmx3072m'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    jdkArchitectureOption: 'x64'
+    SonarCloud: 'sonarcloudapp'
+    organization: 'keoffor'
+    scannerMode: 'Other'
+    extraProperties: |
+      # Additional properties that will be passed to the scanner, 
+      # Put one key=value per line, example:
+      # sonar.exclusions=**/*.bin
+      sonar.projectkey=EmailApp_EmailApp
+      sonar.projectkey=EmailApp_EmailApp
+- task: Maven@3
+  displayName: Maven build
+  inputs:
+    mavenPomFile: 'pom.xml'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    goals: 'package'
+    javaHomeOption: 'JDKVersion'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: false
 - task: Docker@2
+  displayName: Docker build and Push
   inputs:
     containerRegistry: 'brosme'
     repository: 'keoffor/user-service'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
+
 # Build your Java project and run tests with Apache Maven.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
+- task: Maven@3
+  displayName: Sonar build
+  inputs:
+    mavenPomFile: 'pom.xml'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    javaHomeOption: 'JDKVersion'
+    mavenVersionOption: 'Default'
+    mavenAuthenticateFeed: false
+    effectivePomSkip: false
+    sonarQubeRunAnalysis: true
+    sqMavenPluginVersionChoice: 'latest'
+- task: SonarCloudPublish@1
+  displayName: Quality Gate
+  inputs:
+    pollingTimeoutSec: '300'
