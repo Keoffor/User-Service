@@ -65,7 +65,7 @@ steps:
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: 'JaCoCo'
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage/jacoco-coverage.xml'
     # reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
 - task: PublishPipelineArtifact@1
   inputs:
