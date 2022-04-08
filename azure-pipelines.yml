@@ -1,25 +1,29 @@
 # Maven
 
 trigger:
-- master
+ branches:
+   include:
+     - master
+ paths:
+   include:
+     - kenneth-project0
 
-pool: Default
+pool:
+  vmImage: ubuntu-latest
 
 steps:
 - task: SonarCloudPrepare@1
-  displayName: prepare sonar
   inputs:
-    SonarCloud: 'sonarcloudapp'
+    SonarCloud: 'project0sonar'
     organization: 'keoffor'
     scannerMode: 'Other'
     extraProperties: |
       # Additional properties that will be passed to the scanner, 
       # Put one key=value per line, example:
       # sonar.exclusions=**/*.bin
-      sonar.projectkey=EmailApp_EmailApp
-      sonar.projectkey=EmailApp_EmailApp
+      sonar.projectKey=keoffor_Project0
+      sonar.projectName=Project0
 - task: Maven@3
-  displayName: Maven build
   inputs:
     mavenPomFile: 'pom.xml'
     publishJUnitResults: true
@@ -30,19 +34,20 @@ steps:
     effectivePomSkip: false
     sonarQubeRunAnalysis: false
 - task: Docker@2
-  displayName: Docker build and Push
   inputs:
-    containerRegistry: 'pro3'
+    containerRegistry: 'pro3doc'
     repository: 'keoffor/user-service'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
+    tags: |
+      $(Build.BuildId)
+      latest
 
 # Build your Java project and run tests with Apache Maven.
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
 - task: Maven@3
-  displayName: Sonar build
   inputs:
     mavenPomFile: 'pom.xml'
     publishJUnitResults: true
@@ -54,6 +59,16 @@ steps:
     sonarQubeRunAnalysis: true
     sqMavenPluginVersionChoice: 'latest'
 - task: SonarCloudPublish@1
-  displayName: Quality Gate
   inputs:
     pollingTimeoutSec: '300'
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: 'JaCoCo'
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)'
+    artifact: 'app'
+    publishLocation: 'pipeline'
