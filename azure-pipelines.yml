@@ -57,7 +57,7 @@ stages:
     # https://docs.microsoft.com/azure/devops/pipelines/languages/java  
    - job: analize
      dependsOn:
-       -build
+     - build
      steps:
        - task: Maven@3
          displayName: maven test 
