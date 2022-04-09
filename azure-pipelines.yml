@@ -56,6 +56,8 @@ stages:
     # Add steps that analyze code, save build artifacts, deploy, and more:
     # https://docs.microsoft.com/azure/devops/pipelines/languages/java  
    - job: analize
+     dependsOn:
+       -build
      steps:
        - task: Maven@3
          displayName: maven test 
