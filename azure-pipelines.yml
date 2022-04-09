@@ -58,6 +58,7 @@ stages:
    - job: analize
      dependsOn:
      - build
+     condition: succeeded('build')
      steps:
        - task: Maven@3
          displayName: maven test 
