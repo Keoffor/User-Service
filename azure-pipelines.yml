@@ -21,15 +21,15 @@ stages:
      - task: SonarCloudPrepare@1
        displayName: initialise SonarCloud
        inputs:
-        SonarCloud: 'project0sonar'
-        organization: 'keoffor'
-        scannerMode: 'Other'
-        extraProperties: |
-          # Additional properties that will be passed to the scanner, 
-          # Put one key=value per line, example:
-          # sonar.exclusions=**/*.bin
-          sonar.projectKey=keoffor_Project0
-          sonar.projectName=Project0
+         SonarCloud: 'project0sonar'
+         organization: 'keoffor'
+         scannerMode: 'Other'
+         extraProperties: |
+           # Additional properties that will be passed to the scanner, 
+           # Put one key=value per line, example:
+           # sonar.exclusions=**/*.bin
+           sonar.projectKey=keoffor_Project0
+           sonar.projectName=Kenneth-Project0
      - task: Maven@3
        displayName: Maven test
        inputs:
@@ -60,19 +60,20 @@ stages:
      - task: Maven@3
        displayName: use maven 
        inputs:
-        mavenPomFile: 'pom.xml'
-        publishJUnitResults: true
-        testResultsFiles: '**/surefire-reports/TEST-*.xml'
-        javaHomeOption: 'JDKVersion'
-        mavenVersionOption: 'Default'
-        mavenAuthenticateFeed: false
-        effectivePomSkip: false
-        sonarQubeRunAnalysis: true
-        sqMavenPluginVersionChoice: 'latest'
+         mavenPomFile: 'pom.xml'
+         publishJUnitResults: true
+         testResultsFiles: '**/surefire-reports/TEST-*.xml'
+         javaHomeOption: 'JDKVersion'
+         mavenVersionOption: 'Default'
+         mavenAuthenticateFeed: false
+         effectivePomSkip: false
+         sonarQubeRunAnalysis: true
+         isJacocoCoverageReportXML: true
+         sqMavenPluginVersionChoice: 'latest'
      - task: SonarCloudPublish@1
        displayName: sonar publish
        inputs:
-        pollingTimeoutSec: '300'
+         pollingTimeoutSec: '300'
 
      - task: PublishCodeCoverageResults@1
        displayName: code coverage publish
