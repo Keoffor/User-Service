@@ -55,38 +55,34 @@ stages:
     # Build your Java project and run tests with Apache Maven.
     # Add steps that analyze code, save build artifacts, deploy, and more:
     # https://docs.microsoft.com/azure/devops/pipelines/languages/java  
-   - job: analize
-     dependsOn:
-     - build
-     condition: succeeded('build')
-     steps:
-       - task: Maven@3
-         displayName: maven test 
-         inputs:
-          mavenPomFile: 'pom.xml'
-          publishJUnitResults: true
-          testResultsFiles: '**/surefire-reports/TEST-*.xml'
-          javaHomeOption: 'JDKVersion'
-          mavenVersionOption: 'Default'
-          mavenAuthenticateFeed: false
-          effectivePomSkip: false
-          sonarQubeRunAnalysis: true
-          isJacocoCoverageReportXML: true
-          sqMavenPluginVersionChoice: 'latest'
-       - task: SonarCloudPublish@1
-         displayName: sonar publish
-         inputs:
-          pollingTimeoutSec: '300'
+  
+     - task: Maven@3
+       displayName: maven test 
+       inputs:
+        mavenPomFile: 'pom.xml'
+        publishJUnitResults: true
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        javaHomeOption: 'JDKVersion'
+        mavenVersionOption: 'Default'
+        mavenAuthenticateFeed: false
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: true
+        isJacocoCoverageReportXML: true
+        sqMavenPluginVersionChoice: 'latest'
+     - task: SonarCloudPublish@1
+       displayName: sonar publish
+       inputs:
+        pollingTimeoutSec: '300'
 
-       - task: PublishCodeCoverageResults@1
-         displayName: code coverage publish
-         inputs:
-          codeCoverageTool: 'JaCoCo'
-          summaryFileLocation: '$(System.DefaultWorkingDirectory)/target/site/jacoco/jacoco.xml'
-          reportDirectory: '$(System.DefaultWorkingDirectory)/target/site/jacoco'
-       - task: PublishPipelineArtifact@1
-         displayName: artifacts publish
-         inputs:
-          targetPath: '$(Pipeline.Workspace)'
-          artifact: 'app'
-          publishLocation: 'pipeline'
+     - task: PublishCodeCoverageResults@1
+       displayName: code coverage publish
+       inputs:
+        codeCoverageTool: 'JaCoCo'
+        summaryFileLocation: '$(System.DefaultWorkingDirectory)/target/site/jacoco/jacoco.xml'
+        reportDirectory: '$(System.DefaultWorkingDirectory)/target/site/jacoco'
+     - task: PublishPipelineArtifact@1
+       displayName: artifacts publish
+       inputs:
+        targetPath: '$(Pipeline.Workspace)'
+        artifact: 'app'
+        publishLocation: 'pipeline'
