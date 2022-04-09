@@ -10,65 +10,79 @@ trigger:
 
 pool:
   vmImage: ubuntu-latest
+stages:
+ - stage: build
+   variables:
+    appDirectory: kenneth-project0
+   jobs:
+   - job: build  
 
-steps:
-- task: SonarCloudPrepare@1
-  inputs:
-    SonarCloud: 'project0sonar'
-    organization: 'keoffor'
-    scannerMode: 'Other'
-    extraProperties: |
-      # Additional properties that will be passed to the scanner, 
-      # Put one key=value per line, example:
-      # sonar.exclusions=**/*.bin
-      sonar.projectKey=keoffor_Project0
-      sonar.projectName=Project0
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'pom.xml'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    javaHomeOption: 'JDKVersion'
-    mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: false
-- task: Docker@2
-  inputs:
-    containerRegistry: 'pro3doc'
-    repository: 'keoffor/user-service'
-    command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
-    tags: |
-      $(Build.BuildId)
-      latest
+     steps:
+     - task: SonarCloudPrepare@1
+       displayName: initialise SonarCloud
+       inputs:
+        SonarCloud: 'project0sonar'
+        organization: 'keoffor'
+        scannerMode: 'Other'
+        extraProperties: |
+          # Additional properties that will be passed to the scanner, 
+          # Put one key=value per line, example:
+          # sonar.exclusions=**/*.bin
+          sonar.projectKey=keoffor_Project0
+          sonar.projectName=Project0
+     - task: Maven@3
+       displayName: Maven test
+       inputs:
+        mavenPomFile: 'pom.xml'
+        publishJUnitResults: true
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        javaHomeOption: 'JDKVersion'
+        mavenVersionOption: 'Default'
+        mavenAuthenticateFeed: false
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: false
+     - task: Docker@2
+       displayName: Deploy to docker
+       inputs:
+        containerRegistry: 'pro3doc'
+        repository: 'keoffor/user-service'
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
+        tags: |
+          $(Build.BuildId)
+          latest
 
-# Build your Java project and run tests with Apache Maven.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+    # Build your Java project and run tests with Apache Maven.
+    # Add steps that analyze code, save build artifacts, deploy, and more:
+    # https://docs.microsoft.com/azure/devops/pipelines/languages/java
+   - job: analize
+     steps:    
+     - task: Maven@3
+       displayName: use maven 
+       inputs:
+        mavenPomFile: 'pom.xml'
+        publishJUnitResults: true
+        testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        javaHomeOption: 'JDKVersion'
+        mavenVersionOption: 'Default'
+        mavenAuthenticateFeed: false
+        effectivePomSkip: false
+        sonarQubeRunAnalysis: true
+        sqMavenPluginVersionChoice: 'latest'
+     - task: SonarCloudPublish@1
+       displayName: sonar publish
+       inputs:
+        pollingTimeoutSec: '300'
 
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'pom.xml'
-    publishJUnitResults: true
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    javaHomeOption: 'JDKVersion'
-    mavenVersionOption: 'Default'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: true
-    sqMavenPluginVersionChoice: 'latest'
-- task: SonarCloudPublish@1
-  inputs:
-    pollingTimeoutSec: '300'
-
-- task: PublishCodeCoverageResults@1
-  inputs:
-    codeCoverageTool: 'JaCoCo'
-    summaryFileLocation: '$(System.DefaultWorkingDirectory)/target/site/jacoco/jacoco.xml'
-    reportDirectory: '$(System.DefaultWorkingDirectory)/target/site/jacoco'
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(Pipeline.Workspace)'
-    artifact: 'app'
-    publishLocation: 'pipeline'
+     - task: PublishCodeCoverageResults@1
+       displayName: code coverage publish
+       inputs:
+        codeCoverageTool: 'JaCoCo'
+        summaryFileLocation: '$(System.DefaultWorkingDirectory)/target/site/jacoco/jacoco.xml'
+        reportDirectory: '$(System.DefaultWorkingDirectory)/target/site/jacoco'
+     - task: PublishPipelineArtifact@1
+       displayName: publish artifacts
+       inputs:
+        targetPath: '$(Pipeline.Workspace)'
+        artifact: 'app'
+        publishLocation: 'pipeline'
