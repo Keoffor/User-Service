@@ -48,7 +48,7 @@ spec:
       targetPort: 8081
   selector:
     app: userservice-deployment
----
+#---
 #apiVersion: monitoring.coreos.com/v1
 #kind: ServiceMonitor
 #metadata:
