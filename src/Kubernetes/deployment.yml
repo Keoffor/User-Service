@@ -58,5 +58,5 @@ spec:
     matchLabels:
       app: userservice-service
   endpoints:
-    - port: http-app2
+    - port: http-userservice
       path: "/actuator/prometheus"
