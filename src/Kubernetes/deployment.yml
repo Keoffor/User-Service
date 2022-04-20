@@ -49,14 +49,14 @@ spec:
   selector:
     app: userservice-deployment
 ---
-apiVersion: monitoring.coreos.com/v1
-kind: ServiceMonitor
-metadata:
-  name: user-service-monitor
-spec:
-  selector:
-    matchLabels:
-      app: userservice-service
-  endpoints:
-    - port: http-userservice
-      path: "/actuator/prometheus"
+#apiVersion: monitoring.coreos.com/v1
+#kind: ServiceMonitor
+#metadata:
+#  name: user-service-monitor
+#spec:
+#  selector:
+#    matchLabels:
+#      app: userservice-service
+#  endpoints:
+#    - port: http-userservice
+#      path: "/actuator/prometheus"
