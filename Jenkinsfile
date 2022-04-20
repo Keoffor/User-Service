@@ -56,7 +56,7 @@ pipeline {
             }
           }
         }
-        stage('SonarQube analysis') {
+        stage('Sonar scan') {
         //    def scannerHome = tool 'SonarScanner 4.0';
                 steps{
                 withSonarQubeEnv('sonar1') {
