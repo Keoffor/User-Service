@@ -83,12 +83,13 @@ pipeline {
                            credentialsId: 'stagingpro',
                            verifyDeployments: true
                        ])
+                        post{
+                               always{
+                                   cleanWs()
+                               }
+                             }
        }
     }
-    post{
-        always{
-            cleanWs()
-        }
-      }
+
   }
 }
