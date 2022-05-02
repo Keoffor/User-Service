@@ -8,8 +8,7 @@ trigger:
    include:
      - kenneth-project0
 
-pool:
-  vmImage: ubuntu-latest
+pool: win-pool
 stages:
  - stage: build
    variables:
